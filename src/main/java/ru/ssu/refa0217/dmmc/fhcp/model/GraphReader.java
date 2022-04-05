@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class GraphReader {
+    private static final String NAME_LEFT_PART = "NAME : ";
     private static final String DIMENSION_LEFT_PART = "DIMENSION : ";
     private static final String END_OF_FILE = "-1";
 
     public static Graph readGraph(String path) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(path)))) {
-            String name = br.readLine();
+            String name = br.readLine().replace(NAME_LEFT_PART, "");
             br.readLine();
             br.readLine();
             int dimension = Integer.parseInt(br.readLine().replace(DIMENSION_LEFT_PART, ""));

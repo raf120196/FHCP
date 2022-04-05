@@ -5,7 +5,7 @@ import java.util.*;
 public class Graph {
     private final String name;
     private final int dimension;
-    private final Map<Integer, SortedSet<Integer>> adjacencyList;
+    private final Map<Integer, Set<Integer>> adjacencyList;
 
     public Graph(String name, int dimension) {
         this.name = name;
@@ -13,7 +13,7 @@ public class Graph {
         adjacencyList = new HashMap<>();
     }
 
-    public Graph(String name, int dimension, Map<Integer, SortedSet<Integer>> adjacencyList) {
+    public Graph(String name, int dimension, Map<Integer, Set<Integer>> adjacencyList) {
         this.name = name;
         this.dimension = dimension;
         this.adjacencyList = adjacencyList;
@@ -27,17 +27,18 @@ public class Graph {
         return dimension;
     }
 
-    public Map<Integer, SortedSet<Integer>> getAdjacencyList() {
+    public Map<Integer, Set<Integer>> getAdjacencyList() {
         return adjacencyList;
     }
 
     public boolean hasEdge(int i, int j) {
-        return adjacencyList.containsKey(i) && adjacencyList.get(i).contains(j);
+        Set<Integer> connectedNodes = adjacencyList.get(i);
+        return connectedNodes != null && connectedNodes.contains(j);
     }
 
     public void addEdge(int i, int j) {
-        adjacencyList.computeIfAbsent(i, v -> new TreeSet<>()).add(j);
-        adjacencyList.computeIfAbsent(j, v -> new TreeSet<>()).add(i);
+        adjacencyList.computeIfAbsent(i, v -> new HashSet<>()).add(j);
+        adjacencyList.computeIfAbsent(j, v -> new HashSet<>()).add(i);
     }
 
     @Override
