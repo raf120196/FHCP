@@ -15,7 +15,7 @@ public class ResultSaverJob extends Thread {
     private static final String PATH = "C:\\Users\\rafar\\Desktop\\FHCP\\Results\\";
     private static final String FILE_NAME = PATH + "bondy_chvatal.txt";
     private static final String TAB = " --- ";
-    private static final String SEC = " sec.";
+    private static final String MIN = " min.";
     private static final String NEW_LINE = "\r\n";
 
     private final List<Message> messages = new CopyOnWriteArrayList<>();
@@ -67,8 +67,8 @@ public class ResultSaverJob extends Thread {
                     .append(TAB)
                     .append(FORMATTER.format(message.getEndDate()))
                     .append(TAB)
-                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds())
-                    .append(SEC)
+                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds() / 60.0)
+                    .append(MIN)
                     .append(NEW_LINE);
             bw.write(sb.toString());
         }
@@ -83,8 +83,8 @@ public class ResultSaverJob extends Thread {
                     .append(TAB)
                     .append(FORMATTER.format(message.getEndDate()))
                     .append(TAB)
-                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds())
-                    .append(SEC)
+                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds() / 60.0)
+                    .append(MIN)
                     .append(NEW_LINE);
             for (Integer node : message.getHamiltonianCycle()) {
                 sb.append(node + 1).append(NEW_LINE);
