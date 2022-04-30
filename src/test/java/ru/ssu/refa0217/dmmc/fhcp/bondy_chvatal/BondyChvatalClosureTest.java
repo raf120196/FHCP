@@ -17,7 +17,7 @@ class BondyChvatalClosureTest {
 
     @Before
     public void setUp() {
-        graph = new Graph("1", 7);
+        graph = new Graph(1, "1", 7);
         graph.addEdge(0, 3);
         graph.addEdge(0, 4);
         graph.addEdge(0, 5);
@@ -28,7 +28,7 @@ class BondyChvatalClosureTest {
         graph.addEdge(2, 3);
         graph.addEdge(2, 4);
 
-        closureGraph = new Graph("1", 7);
+        closureGraph = new Graph(1, "1", 7);
         closureGraph.addEdge(0, 3);
         closureGraph.addEdge(0, 4);
         closureGraph.addEdge(0, 5);

@@ -9,7 +9,7 @@ import java.util.Map;
 public class BondyChvatalClosure {
     public static ClosureGraph makeClosure(final Graph graph) {
         int n = graph.getDimension();
-        ClosureGraph closureGraph = new ClosureGraph(graph.getName(), n, graph.getAdjacencyList());
+        ClosureGraph closureGraph = new ClosureGraph(graph.getIdx(), graph.getName(), n, graph.getAdjacencyList());
         Map<Integer, Integer> deg = getDegreesMap(closureGraph);
         boolean addPair;
         do {

@@ -10,12 +10,12 @@ import java.util.Set;
 public class ClosureGraph extends Graph {
     private List<Pair<Integer, Integer>> addedEdges = new ArrayList<>();
 
-    public ClosureGraph(String name, int dimension) {
-        super(name, dimension);
+    public ClosureGraph(int idx, String name, int dimension) {
+        super(idx, name, dimension);
     }
 
-    public ClosureGraph(String name, int dimension, Map<Integer, Set<Integer>> adjacencyList) {
-        super(name, dimension, adjacencyList);
+    public ClosureGraph(int idx, String name, int dimension, Map<Integer, Set<Integer>> adjacencyList) {
+        super(idx, name, dimension, adjacencyList);
     }
 
     @Override

@@ -13,7 +13,7 @@ public class GraphUtilsTest {
 
     @Before
     public void setUp() throws Exception {
-        graph1 = new Graph("1", 7);
+        graph1 = new Graph(1, "1", 7);
         graph1.addEdge(0, 1);
         graph1.addEdge(0, 2);
         graph1.addEdge(0, 3);
@@ -36,7 +36,7 @@ public class GraphUtilsTest {
         graph1.addEdge(4, 6);
         graph1.addEdge(5, 6);
 
-        graph2 = new Graph("1", 7);
+        graph2 = new Graph(2, "2", 7);
         graph2.addEdge(0, 1);
         graph2.addEdge(0, 2);
         graph2.addEdge(0, 3);

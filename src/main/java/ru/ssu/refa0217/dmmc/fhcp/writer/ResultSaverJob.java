@@ -4,7 +4,8 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -13,10 +14,11 @@ public class ResultSaverJob extends Thread {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss SSS");
 
     private static final String PATH = "C:\\Users\\rafar\\Desktop\\FHCP\\Results\\";
+    private static final String HYBRID_PATH = PATH + "hybrid\\";
     private static final String FILE_NAME = PATH + "bondy_chvatal.txt";
     private static final String TAB = " --- ";
-    private static final String MIN = " min.";
     private static final String NEW_LINE = "\r\n";
+    private static final String COMMA = ", ";
 
     private final List<Message> messages = new CopyOnWriteArrayList<>();
 
@@ -48,8 +50,10 @@ public class ResultSaverJob extends Thread {
         try {
             if (message instanceof BondyChvatalSufficiencyConditionMessage) {
                 writeBondyChvatalMessage((BondyChvatalSufficiencyConditionMessage) message);
-            } else {
+            } else if (message instanceof HamiltonianCycleMessage) {
                 writeHamiltonianCycle((HamiltonianCycleMessage) message);
+            } else if (message instanceof HybridHamiltonianCycleMessage) {
+                writeHybridHamiltonianCycle((HybridHamiltonianCycleMessage) message);
             }
             return true;
         } catch (IOException e) {
@@ -63,12 +67,13 @@ public class ResultSaverJob extends Thread {
             StringBuilder sb = new StringBuilder();
             sb.append(message.getGraphName())
                     .append(TAB)
-                    .append(FORMATTER.format(message.getStartDate()))
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStartTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
                     .append(TAB)
-                    .append(FORMATTER.format(message.getEndDate()))
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStopTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
                     .append(TAB)
-                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds() / 60.0)
-                    .append(MIN)
+                    .append(message.getWatch().formatTime())
                     .append(NEW_LINE);
             bw.write(sb.toString());
         }
@@ -79,16 +84,50 @@ public class ResultSaverJob extends Thread {
             StringBuilder sb = new StringBuilder();
             sb.append(message.getGraphName())
                     .append(TAB)
-                    .append(FORMATTER.format(message.getStartDate()))
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStartTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
                     .append(TAB)
-                    .append(FORMATTER.format(message.getEndDate()))
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStopTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
                     .append(TAB)
-                    .append(Duration.between(message.getStartDate(), message.getEndDate()).getSeconds() / 60.0)
-                    .append(MIN)
+                    .append(message.getWatch().formatTime())
                     .append(NEW_LINE);
             for (Integer node : message.getHamiltonianCycle()) {
                 sb.append(node + 1).append(NEW_LINE);
             }
+            bw.write(sb.toString());
+        }
+    }
+
+    private void writeHybridHamiltonianCycle(HybridHamiltonianCycleMessage message) throws IOException {
+        try (BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(HYBRID_PATH + message.getGraphName())))) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(message.getGraphName())
+                    .append(TAB)
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStartTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
+                    .append(TAB)
+                    .append(FORMATTER.format(Instant.ofEpochMilli(message.getWatch().getStopTime())
+                            .atZone(ZoneId.systemDefault()).toLocalDateTime()))
+                    .append(TAB)
+                    .append(message.getWatch().formatTime())
+                    .append(NEW_LINE);
+
+            sb.append("Path:").append(NEW_LINE);
+            for (Integer node : message.getPathAndCycle().getLeft()) {
+                sb.append(node + 1).append(COMMA);
+            }
+            sb.delete(sb.length() - 2, sb.length());
+            sb.append(NEW_LINE);
+
+            sb.append("Cycle:").append(NEW_LINE);
+            if (message.getPathAndCycle().getRight() != null) {
+                for (Integer node : message.getPathAndCycle().getRight()) {
+                    sb.append(node + 1).append(COMMA);
+                }
+                sb.delete(sb.length() - 2, sb.length());
+            }
+
             bw.write(sb.toString());
         }
     }

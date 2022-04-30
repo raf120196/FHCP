@@ -1,18 +1,17 @@
 package ru.ssu.refa0217.dmmc.fhcp.writer;
 
-import java.time.LocalDateTime;
+import org.apache.commons.lang3.time.StopWatch;
+
 import java.util.List;
 
 public class HamiltonianCycleMessage implements Message {
     private final String graphName;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final StopWatch watch;
     private final List<Integer> hamiltonianCycle;
 
-    public HamiltonianCycleMessage(String graphName, LocalDateTime startDate, LocalDateTime endDate, List<Integer> hamiltonianCycle) {
+    public HamiltonianCycleMessage(String graphName, StopWatch watch, List<Integer> hamiltonianCycle) {
         this.graphName = graphName;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.watch = watch;
         this.hamiltonianCycle = hamiltonianCycle;
     }
 
@@ -20,12 +19,8 @@ public class HamiltonianCycleMessage implements Message {
         return graphName;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public StopWatch getWatch() {
+        return watch;
     }
 
     public List<Integer> getHamiltonianCycle() {
