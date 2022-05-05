@@ -1,6 +1,9 @@
 package ru.ssu.refa0217.dmmc.fhcp.model;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class GraphUtils {
     public static boolean isGraphComplete(final Graph graph) {
@@ -28,32 +31,5 @@ public class GraphUtils {
                 throw new RuntimeException("Graph has no edge " + (hamiltonianCycle.get(i) + 1) + " -> " + (hamiltonianCycle.get(nextIdx) + 1));
             }
         }
-    }
-
-    public static int getNodesAmount(final Graph graph) {
-        return graph.getDimension();
-    }
-
-    public static int getEdgesAmount(final Graph graph) {
-        return graph.getAdjacencyList().values()
-                .stream()
-                .map(Set::size)
-                .reduce(0, Integer::sum) / 2;
-    }
-
-    public static int getMaxNodeDegree(final Graph graph) {
-        return graph.getAdjacencyList().entrySet()
-                .stream()
-                .max(Comparator.comparingInt(e -> e.getValue().size()))
-                .map(e -> e.getValue().size())
-                .get();
-    }
-
-    public static int getMinNodeDegree(final Graph graph) {
-        return graph.getAdjacencyList().entrySet()
-                .stream()
-                .min(Comparator.comparingInt(e -> e.getValue().size()))
-                .map(e -> e.getValue().size())
-                .get();
     }
 }
