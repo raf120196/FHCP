@@ -34,7 +34,7 @@ public class BondyChvatalHamiltonianCycleBuilder {
                 if (s == -1) {
                     throw new RuntimeException("Edge is not found!");
                 }
-                cycle = changeCycle(cycle, edge.getLeft(), edge.getRight(), s);
+                cycle = changeCycle(cycle, s);
             }
         }
 
@@ -56,7 +56,7 @@ public class BondyChvatalHamiltonianCycleBuilder {
         return Result.NO;
     }
 
-    private static List<Integer> changeCycle(List<Integer> cycle, Integer from, Integer to, int s) {
+    private static List<Integer> changeCycle(List<Integer> cycle, int s) {
         List<Integer> newCycle = new ArrayList<>();
         for (int i = 0; i <= s; i++) {
             newCycle.add(cycle.get(i));
